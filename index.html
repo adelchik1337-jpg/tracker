@@ -18,41 +18,86 @@
     --body:'Golos Text',system-ui,-apple-system,sans-serif;
   }
   *{box-sizing:border-box}
+  html{-webkit-tap-highlight-color:transparent}
   body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:560px;margin:0 auto;padding:max(20px,env(safe-area-inset-top)) 16px 90px}
-  button{font-family:inherit;cursor:pointer}
+  .wrap{max-width:560px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 16px 90px}
+  button,label,input,select,textarea{font-family:inherit}
+  button{cursor:pointer;touch-action:manipulation}
   button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
-  .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}
-  .top .ttl{font-family:var(--disp);font-size:20px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+  .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+  .top .ttl{font-family:var(--disp);font-size:19px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
   .top .date{font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
 
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 20px 20px;margin-bottom:14px;overflow:hidden}
-  .card.fire{border-color:var(--fire-dim)}
-  .card.ice{border-color:var(--ice-dim)}
-  .card .name{font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .card.fire .name{color:var(--fire)} .card.ice .name{color:var(--ice)}
-  .kebab{background:none;border:none;color:var(--faint);font-size:18px;line-height:1;padding:2px 8px;border-radius:6px}
-  .kebab:hover{color:var(--text);background:var(--surface2)}
+  /* ── панель СЕГОДНЯ ── */
+  .todaybar{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 14px 12px;margin-bottom:12px}
+  .todaybar .head{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px 10px}
+  .todaybar .head .lbl{font-family:var(--disp);font-size:13px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--mute)}
+  .todaybar .head .cnt{font-family:var(--disp);font-size:16px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+  .todaybar .head .cnt.full{color:var(--ice)}
+  .trow{display:flex;align-items:center;gap:12px;width:100%;background:var(--surface2);border:1px solid var(--line-soft);
+    border-radius:13px;padding:0 14px;min-height:58px;margin-top:8px;color:var(--text);text-align:left}
+  .trow:first-of-type{margin-top:0}
+  .trow .nm{flex:1;font-size:15.5px;font-weight:600;line-height:1.25}
+  .trow .nm small{display:block;font-weight:500;font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+  .trow .num{font-family:var(--disp);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--mute)}
+  .trow.fire .num{color:var(--fire)} .trow.ice .num{color:var(--ice)} .trow.gold .num{color:var(--gold)}
+  .trow .ck{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--faint);flex-shrink:0;position:relative;transition:background .15s,border-color .15s}
+  .trow.on{border-color:var(--line)}
+  .trow.on .ck{border-color:transparent}
+  .trow.fire.on .ck{background:var(--fire)} .trow.ice.on .ck{background:var(--ice)} .trow.gold.on .ck{background:var(--gold)}
+  .trow.on .ck::after{content:"";position:absolute;left:11px;top:6px;width:7px;height:14px;border:solid #0D0F12;border-width:0 3px 3px 0;transform:rotate(42deg)}
+  .trow.on .nm{color:var(--mute)}
+  .perfect{padding:10px 4px 0;font-size:12.5px;color:var(--mute);text-align:center;font-variant-numeric:tabular-nums}
+  .perfect b{color:var(--text)}
 
-  .big{font-family:var(--disp);font-size:clamp(80px,25vw,124px);font-weight:700;line-height:.86;letter-spacing:-.02em;margin:10px 0 0;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:12px}
+  .nag{display:flex;align-items:center;gap:10px;width:100%;background:var(--gold-bg);border:1px solid var(--gold);
+    border-radius:13px;padding:12px 14px;margin-top:8px;color:var(--text);font-size:13.5px;text-align:left}
+  .nag b{color:var(--gold)}
+
+  /* ── настрой ── */
+  .aff{background:var(--gold-bg);border:1px solid var(--gold);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+  .aff .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+  .aff .txt{font-size:16.5px;line-height:1.6;white-space:pre-wrap;min-height:22px}
+  .aff textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px;font-size:16px;line-height:1.55;min-height:110px;resize:vertical;display:none}
+  .aff.editing .txt{display:none}
+  .aff.editing textarea{display:block}
+  .aff .edit{background:none;border:1px solid var(--gold);color:var(--gold);border-radius:8px;padding:9px 14px;font-size:12px;font-weight:600;min-height:40px}
+  .aff .streakline{font-size:12.5px;color:var(--mute);margin-top:8px}
+
+  h2.sec{font-family:var(--disp);font-size:14px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:26px 0 10px}
+
+  /* ── карточки прогресса (свёрнутые) ── */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin-bottom:10px;overflow:hidden}
+  .card.fire{border-color:var(--fire-dim)} .card.ice{border-color:var(--ice-dim)}
+  .chead{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;color:var(--text);padding:15px 16px;text-align:left;min-height:56px}
+  .chead .nm{flex:1;font-size:14.5px;font-weight:600}
+  .card.fire .chead .nm{color:var(--fire)} .card.ice .chead .nm{color:var(--ice)}
+  .chead .n2{font-family:var(--disp);font-size:20px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+  .chead .n2 small{font-family:var(--body);font-size:11.5px;color:var(--mute);font-weight:500}
+  .chead .arr{color:var(--faint);font-size:13px;transition:transform .2s}
+  .card.open .chead .arr{transform:rotate(90deg)}
+  .cbody{display:none;padding:0 18px 18px}
+  .card.open .cbody{display:block}
+
+  .big{font-family:var(--disp);font-size:clamp(70px,22vw,110px);font-weight:700;line-height:.9;letter-spacing:-.02em;margin:4px 0 0;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:12px}
   .card.fire .big{color:var(--fire)} .card.ice .big{color:var(--ice)}
-  .big .unit{font-family:var(--body);font-size:14.5px;font-weight:600;color:var(--mute);line-height:1.2;padding-bottom:8px}
-  .since{font-size:13px;color:var(--mute);margin-top:8px;font-variant-numeric:tabular-nums}
+  .big .unit{font-family:var(--body);font-size:14px;font-weight:600;color:var(--mute);line-height:1.2;padding-bottom:7px}
+  .since{font-size:13px;color:var(--mute);margin-top:6px}
 
-  .stake{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .stake{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
   .st{flex:1 1 110px;background:var(--surface2);border-radius:11px;padding:10px 12px}
-  .st b{display:block;font-family:var(--disp);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+  .st b{display:block;font-family:var(--disp);font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
   .st span{font-size:11px;color:var(--mute)}
 
-  .goal{margin-top:16px}
+  .goal{margin-top:14px}
   .goal .row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);margin-bottom:6px;font-variant-numeric:tabular-nums}
   .goal .row b{color:var(--text);font-weight:600}
   .bar{height:8px;border-radius:5px;background:var(--line-soft);overflow:hidden}
-  .bar i{display:block;height:100%;border-radius:5px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+  .bar i{display:block;height:100%;border-radius:5px}
   .card.fire .bar i{background:var(--fire)} .card.ice .bar i{background:var(--ice)}
 
-  .grid{display:flex;flex-wrap:wrap;gap:3px;margin-top:16px}
+  .grid{display:flex;flex-wrap:wrap;gap:3px;margin-top:14px}
   .grid i{width:9px;height:9px;border-radius:2px;background:var(--line-soft)}
   .card.fire .grid i.on{background:var(--fire);opacity:.4}
   .card.ice .grid i.on{background:var(--ice);opacity:.4}
@@ -61,72 +106,58 @@
   .card.fire .grid i.today{color:var(--fire)} .card.ice .grid i.today{color:var(--ice)}
   .gridnote{font-size:11.5px;color:var(--faint);margin-top:8px}
 
-  .done{width:100%;border:none;border-radius:13px;padding:16px;font-size:16px;font-weight:700;color:#fff;margin-top:18px;transition:transform .1s ease}
-  .card.fire .done{background:var(--fire)} .card.ice .done{background:var(--ice)}
-  .done:active{transform:scale(.985)}
-  .done.ok{background:var(--surface2);color:var(--mute);border:1px solid var(--line);cursor:default}
-
-  .menu{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft);display:none}
-  .menu.open{display:block}
+  .menu{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
   .menu p{margin:0 0 10px;font-size:13.5px;color:var(--mute)}
   .menu .row{display:flex;gap:8px;flex-wrap:wrap}
-  .mini{border:1px solid var(--line);background:none;color:var(--text);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:500}
+  .mini{border:1px solid var(--line);background:none;color:var(--text);border-radius:9px;padding:10px 14px;font-size:13.5px;font-weight:500;min-height:44px}
   .mini.danger{color:var(--fire);border-color:var(--fire-dim)}
+  .mini.gold{color:var(--gold);border-color:var(--gold)}
+  .confirmbox{margin-top:10px;background:var(--fire-bg);border:1px solid var(--fire-dim);border-radius:10px;padding:12px 14px}
+  .confirmbox p{margin:0 0 10px;font-size:14px}
+  .dateedit{margin-top:10px;display:flex;gap:8px;align-items:center}
+  .dateedit input{background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:10px 12px;font-size:15px;flex:1}
 
-  .add{width:100%;background:none;border:1.5px dashed var(--line);color:var(--mute);border-radius:16px;padding:16px;font-size:14.5px;font-weight:500}
-  .add:hover{border-color:var(--faint);color:var(--text)}
-  .form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;display:none}
+  .add{width:100%;background:none;border:1.5px dashed var(--line);color:var(--mute);border-radius:16px;padding:15px;font-size:14.5px;font-weight:500;margin-top:2px}
+  .form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:12px;display:none}
   .form.open{display:block}
   .form label{display:block;font-size:12.5px;font-weight:600;margin:12px 0 5px}
   .form label:first-child{margin-top:0}
-  .form input,.form select,.form textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:11px 12px;font-family:inherit;font-size:15px}
+  .form input,.form select{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:11px 12px;font-size:15px}
+  .form input.err{border-color:var(--fire)}
   .form .hint{font-size:12px;color:var(--mute);margin-top:4px}
   .form .btns{display:flex;gap:8px;margin-top:16px}
-  .form .btns button{flex:1;border-radius:10px;padding:12px;font-size:14.5px;font-weight:600;border:1px solid var(--line);background:none;color:var(--text)}
+  .form .btns button{flex:1;border-radius:10px;padding:13px;font-size:14.5px;font-weight:600;border:1px solid var(--line);background:none;color:var(--text)}
   .form .btns .go{background:var(--text);color:var(--bg);border-color:var(--text)}
 
-  h2.sec{font-family:var(--disp);font-size:15px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:30px 0 12px}
-
-  /* аффирмации */
-  .aff{background:var(--gold-bg);border:1px solid var(--gold);border-radius:16px;padding:18px;margin-bottom:14px}
-  .aff .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-  .aff .txt{font-size:17px;line-height:1.6;white-space:pre-wrap;min-height:24px}
-  .aff textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px;font-family:inherit;font-size:16px;line-height:1.55;min-height:110px;resize:vertical;display:none}
-  .aff.editing .txt{display:none}
-  .aff.editing textarea{display:block}
-  .aff .edit{background:none;border:1px solid var(--gold);color:var(--gold);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600}
-  .aff .readbtn{width:100%;border:none;border-radius:11px;padding:13px;font-size:14.5px;font-weight:700;background:var(--gold);color:#1a1406;margin-top:14px}
-  .aff .readbtn.ok{background:var(--surface2);color:var(--mute);border:1px solid var(--line);cursor:default}
-  .aff .streakline{font-size:12.5px;color:var(--mute);margin-top:8px;text-align:center}
-
-  /* запись дня */
-  .note{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  .note{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:12px}
   .note .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--mute);margin-bottom:10px}
-  .note textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px;font-family:inherit;font-size:15.5px;line-height:1.5;min-height:70px;resize:vertical}
-  .note .savebtn{width:100%;border:1px solid var(--line);background:none;color:var(--text);border-radius:10px;padding:11px;font-size:14px;font-weight:600;margin-top:10px}
+  .qs{background:var(--surface2);border-left:2px solid var(--gold);border-radius:0 9px 9px 0;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.7;color:var(--mute);display:none}
+  .qs.show{display:block}
+  .note textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px;font-size:15.5px;line-height:1.5;min-height:70px;resize:vertical}
+  .note .savebtn{width:100%;border:1px solid var(--line);background:none;color:var(--text);border-radius:10px;padding:12px;font-size:14px;font-weight:600;margin-top:10px;min-height:44px}
   .hist{margin-top:14px;display:flex;flex-direction:column;gap:10px}
   .h1n{background:var(--surface2);border-radius:10px;padding:10px 13px}
   .h1n .d{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;margin-bottom:3px}
   .h1n .t{font-size:14.5px;white-space:pre-wrap}
+  .morebtn{width:100%;background:none;border:1px solid var(--line);color:var(--mute);border-radius:10px;padding:10px;font-size:13px;font-weight:600;margin-top:10px;min-height:44px}
 
-  /* бэкап */
-  .backup{display:flex;gap:8px;margin:6px 0 30px}
-  .backup button,.backup label{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--mute);border-radius:10px;padding:11px;font-size:13px;font-weight:600;text-align:center;cursor:pointer}
+  .backup{display:flex;gap:8px;margin:4px 0 26px}
+  .backup button,.backup label.up{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--mute);border-radius:10px;padding:12px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;min-height:44px}
   .backup input{display:none}
 
-  .rules{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:8px}
+  .rules{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-top:8px}
   .rules h3{font-family:var(--disp);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:0 0 12px}
   .rules ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:9px}
   .rules li{font-size:14px;line-height:1.45;color:var(--mute)}
   .rules b{font-weight:600;color:var(--text)}
 
-  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(120%);
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(130%);
     background:var(--text);color:var(--bg);padding:13px 20px;border-radius:12px;font-weight:600;font-size:15px;
-    transition:transform .34s cubic-bezier(.22,1,.36,1);z-index:50;box-shadow:0 8px 28px rgba(0,0,0,.35);max-width:90vw;text-align:center}
+    transition:transform .32s cubic-bezier(.22,1,.36,1);z-index:50;box-shadow:0 8px 28px rgba(0,0,0,.35);max-width:90vw;text-align:center}
   .toast.show{transform:translateX(-50%) translateY(0)}
 
-  @keyframes pop{0%{transform:scale(1)}38%{transform:scale(1.1)}100%{transform:scale(1)}}
-  @media (prefers-reduced-motion:no-preference){ .big.pop{animation:pop .42s ease-out} }
+  @keyframes pop{0%{transform:scale(1)}38%{transform:scale(1.12)}100%{transform:scale(1)}}
+  @media (prefers-reduced-motion:no-preference){ .pop{animation:pop .4s ease-out} }
 </style>
 </head>
 <body>
@@ -136,14 +167,21 @@
     <span class="date" id="today"></span>
   </div>
 
+  <div class="todaybar">
+    <div class="head"><span class="lbl">Сегодня</span><span class="cnt" id="todayCnt"></span></div>
+    <div id="todayRows"></div>
+    <div id="nag"></div>
+    <div class="perfect" id="perfectLine"></div>
+  </div>
+
   <div class="aff" id="affBox">
     <div class="lbl"><span>Мой настрой</span><button class="edit" onclick="editAff()" id="affEditBtn">Изменить</button></div>
     <div class="txt" id="affText"></div>
     <textarea id="affEdit" placeholder="Запиши сюда свои аффирмации, настрой, веру в себя — своими словами."></textarea>
-    <button class="readbtn" id="affRead" onclick="markAff()"></button>
     <div class="streakline" id="affStreak"></div>
   </div>
 
+  <h2 class="sec">Прогресс</h2>
   <div id="list"></div>
 
   <div class="form" id="form">
@@ -157,6 +195,9 @@
     <label>С какого дня идёт</label>
     <input id="f_start" type="date">
     <div class="hint">Начал давно — ставь настоящую дату старта, счётчик сразу покажет накопленное.</div>
+    <label>Штраф за пропуск (необязательно)</label>
+    <input id="f_per" placeholder="например: 100 отжиманий" maxlength="30">
+    <div class="hint">Пусто — пропуск просто отмечается, без долга.</div>
     <div class="btns">
       <button onclick="closeForm()">Отмена</button>
       <button class="go" onclick="addHabit()">Добавить</button>
@@ -167,15 +208,17 @@
   <h2 class="sec">Запись дня</h2>
   <div class="note">
     <div class="lbl" id="noteLbl">Пара строк о сегодня</div>
+    <div class="qs" id="sundayQs">1. Проявлялся ли я на этой неделе?<br>2. Отдыхал ли телом — настоящим отдыхом, не псевдо?<br>3. Тянуло ли в избегание (игры, рилсы, сладкое)? Где поймал?<br>4. Что с деньгами: пришло / ушло / что висит?<br>5. Планка: держу, повышаю или неделя удержания?</div>
     <textarea id="noteText" placeholder="Что было важного, что понял, за что благодарен…"></textarea>
     <button class="savebtn" onclick="saveNote()">Сохранить запись</button>
     <div class="hist" id="noteHist"></div>
+    <button class="morebtn" id="moreBtn" onclick="toggleHist()" style="display:none"></button>
   </div>
 
   <h2 class="sec">Данные</h2>
   <div class="backup">
     <button onclick="exportData()">Скачать копию</button>
-    <label>Восстановить<input type="file" accept=".json" onchange="importData(event)"></label>
+    <label class="up">Восстановить<input type="file" accept=".json" onchange="importData(event)"></label>
   </div>
 
   <div class="rules">
@@ -187,13 +230,13 @@
     </ul>
   </div>
 
-  <div class="rules" style="margin-top:14px">
+  <div class="rules" style="margin-top:12px">
     <h3>Как это работает</h3>
     <ul>
       <li><b>Счётчик идёт сам.</b> Забыл нажать — цифра не сгорит. Падает только если сам скажешь, что сорвался.</li>
-      <li><b>Кнопка — засечка, не отчёт.</b> Нажал — день закрасился. Сетка — твой капитал, её жалко терять.</li>
-      <li><b>Пропустил «делаю» — долг</b>, счётчик живёт. Сорвался в «отказе» — с нуля, но рекорд остаётся навсегда.</li>
-      <li><b>Данные живут в этом браузере.</b> Раз в неделю жми «Скачать копию» — файл в загрузки, и ничего не потеряется.</li>
+      <li><b>Галочка — засечка, не отчёт.</b> Тапнул — день закрасился. Сетка — твой капитал, её жалко терять.</li>
+      <li><b>День заканчивается в 4 утра.</b> Отметил в час ночи — засчитается вчерашнему дню, дырки не будет.</li>
+      <li><b>Данные живут в этом браузере.</b> Страница сама напомнит скачать копию раз в неделю.</li>
       <li><b>Больше пяти привычек не заводи.</b> Таблицу на двадцать ты уже пробовал.</li>
     </ul>
   </div>
@@ -204,8 +247,10 @@
 const MILES=[7,14,30,50,75,100,150,200,250,300,365,500,730,1000];
 const KEY='streak_gh_v1';
 
+/* день заканчивается в 4 утра */
+const now=()=>new Date(Date.now()-4*3600*1000);
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-const today=()=>iso(new Date());
+const today=()=>iso(now());
 const parse=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
 const daysBetween=(a,b)=>Math.round((parse(b)-parse(a))/86400000);
 const streak=h=>Math.max(0,daysBetween(h.start,today())+1);
@@ -220,7 +265,7 @@ function fresh(){
     {id:'push',name:'Отжимания',type:'do',start:'2026-02-12',per:100,unit:'отжиманий',color:'fire',marks:[],resets:[],best:0,debt:0},
     {id:'sober',name:'Без алкоголя и никотина',type:'avoid',start:'2026-08-05',per:0,unit:'',color:'ice',marks:[],resets:[],best:0,debt:0},
     {id:'games',name:'Без видеоигр',type:'avoid',start:'2026-09-04',per:0,unit:'',color:'fire',marks:[],resets:[],best:0,debt:0}
-  ],aff:{text:'',log:[]},notes:[]};
+  ],aff:{text:'',log:[]},notes:[],lastExport:null};
 }
 let S=null;
 try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):fresh();}catch(e){S=fresh();}
@@ -228,120 +273,200 @@ if(!S||!Array.isArray(S.habits))S=fresh();
 S.aff=S.aff||{text:'',log:[]}; S.notes=S.notes||[];
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast('Не сохранилось — памяти нет');}}
 
+/* состояние сессии (не хранится) */
+const openCards=new Set();
+let confirmIdx=null, dateIdx=null, histAll=false;
+
 function render(){
-  document.getElementById('today').textContent=new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
-  renderAff(); renderList(); renderNotes();
+  document.getElementById('today').textContent=now().toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+  renderToday(); renderAff(); renderList(); renderNotes();
   document.getElementById('addbtn').style.display=S.habits.length>=8?'none':'';
 }
 
-function renderAff(){
-  const has=!!(S.aff.text&&S.aff.text.trim());
-  document.getElementById('affText').textContent=has?S.aff.text:'Тут будут твои аффирмации. Нажми «Изменить» и запиши свой настрой своими словами.';
-  document.getElementById('affText').style.color=has?'':'var(--mute)';
-  const done=S.aff.log.includes(today());
-  const b=document.getElementById('affRead');
-  b.textContent=done?'Сегодня прочитано ✓':'Прочитал вслух';
-  b.classList.toggle('ok',done);
-  b.style.display=has?'':'none';
-  let n=0;const d=new Date();
+/* ── панель СЕГОДНЯ ── */
+function renderToday(){
+  const t=today();
+  const rows=S.habits.map((h,i)=>{
+    const on=(h.marks||[]).includes(t);
+    const label=h.type==='do'?'сделал':'день чистый';
+    return `<button class="trow ${h.color} ${on?'on':''}" onclick="quickMark(${i})">
+      <span class="nm">${esc(h.name)}<small>${on?'✓ '+label:'тапни, если '+label}</small></span>
+      <span class="num" id="qn${i}">${streak(h)}</span>
+      <span class="ck"></span></button>`;
+  });
+  if(S.aff.text&&S.aff.text.trim()){
+    const on=S.aff.log.includes(t);
+    rows.push(`<button class="trow gold ${on?'on':''}" onclick="quickAff()">
+      <span class="nm">Мой настрой<small>${on?'✓ прочитан':'прочитать вслух'}</small></span>
+      <span class="num" id="qnaff">${affStreak()}</span>
+      <span class="ck"></span></button>`);
+  }
+  document.getElementById('todayRows').innerHTML=rows.join('');
+  const total=S.habits.length+((S.aff.text&&S.aff.text.trim())?1:0);
+  const done=S.habits.filter(h=>(h.marks||[]).includes(t)).length+((S.aff.text&&S.aff.log.includes(t))?1:0);
+  const cnt=document.getElementById('todayCnt');
+  cnt.textContent=done+'/'+total+(done===total&&total>0?' ✓':'');
+  cnt.classList.toggle('full',done===total&&total>0);
+  /* полные дни */
+  let perfect=0;
+  const d=new Date(now());
+  for(let k=0;k<365;k++){
+    const key=iso(d);
+    const active=S.habits.filter(h=>h.start<=key);
+    if(active.length&&active.every(h=>(h.marks||[]).includes(key)))perfect++;
+    d.setDate(d.getDate()-1);
+  }
+  document.getElementById('perfectLine').innerHTML=perfect
+    ?`полных дней (отмечено всё): <b>${perfect}</b>`
+    :'закрой все галочки — пойдёт счёт полных дней';
+  renderNag();
+}
+function quickMark(i){
+  const h=S.habits[i],t=today();
+  h.marks=h.marks||[];
+  const idx=h.marks.indexOf(t);
+  if(idx>=0){h.marks.splice(idx,1);save();render();return;}
+  h.marks.push(t);save();render();
+  const el=document.getElementById('qn'+i);
+  if(el){el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),420);}
+  const n=streak(h),nm=nextMile(n);
+  toast(MILES.includes(n)?`${n} ${plural(n,'день','дня','дней')} — веха взята!`:`До ${nm} осталось ${nm-n}.`);
+}
+function quickAff(){
+  const t=today();
+  const idx=S.aff.log.indexOf(t);
+  if(idx>=0){S.aff.log.splice(idx,1);}else{S.aff.log.push(t);toast('Настрой принят.');}
+  save();render();
+}
+function affStreak(){
+  let n=0;const d=new Date(now());
   if(!S.aff.log.includes(iso(d)))d.setDate(d.getDate()-1);
   while(S.aff.log.includes(iso(d))){n++;d.setDate(d.getDate()-1);}
-  document.getElementById('affStreak').textContent=has?(n?`читаю ${n} ${plural(n,'день','дня','дней')} подряд · всего ${S.aff.log.length}`:'начни серию — прочитай сегодня'):'';
+  return n;
+}
+function renderNag(){
+  const box=document.getElementById('nag');
+  const last=S.lastExport?daysBetween(S.lastExport,today()):999;
+  const sunday=now().getDay()===0;
+  const used=S.habits.some(h=>(h.marks||[]).length>0);
+  if(used&&(last>7||sunday&&last>0)){
+    box.innerHTML=`<button class="nag" onclick="exportData()"><span><b>Копии ${S.lastExport?last+' '+plural(last,'день','дня','дней'):'нет'}.</b> Скачать сейчас — один тап.</span></button>`;
+  }else box.innerHTML='';
+}
+
+/* ── настрой ── */
+function renderAff(){
+  const has=!!(S.aff.text&&S.aff.text.trim());
+  document.getElementById('affText').textContent=has?S.aff.text:'Нажми «Изменить» и запиши свой настрой своими словами — он появится в панели «Сегодня».';
+  document.getElementById('affText').style.color=has?'':'var(--mute)';
+  const n=affStreak();
+  document.getElementById('affStreak').textContent=has?(n?`читаю ${n} ${plural(n,'день','дня','дней')} подряд · всего ${S.aff.log.length}`:'отметка чтения — в панели «Сегодня» сверху'):'';
 }
 function editAff(){
   const box=document.getElementById('affBox'),ta=document.getElementById('affEdit'),btn=document.getElementById('affEditBtn');
   if(box.classList.contains('editing')){
-    S.aff.text=ta.value.trim();save();box.classList.remove('editing');btn.textContent='Изменить';renderAff();
+    S.aff.text=ta.value.trim();save();box.classList.remove('editing');btn.textContent='Изменить';render();
   }else{
     ta.value=S.aff.text||'';box.classList.add('editing');btn.textContent='Готово';ta.focus();
   }
 }
-function markAff(){
-  if(S.aff.log.includes(today()))return;
-  S.aff.log.push(today());save();renderAff();toast('Настрой принят. Пошли дальше.');
-}
 
+/* ── карточки прогресса ── */
 function renderList(){
   document.getElementById('list').innerHTML=S.habits.map(card).join('');
 }
 function card(h,i){
   const n=streak(h);
+  const open=openCards.has(h.id);
   const mk=new Set(h.marks||[]);
-  const doneToday=mk.has(today());
   const nm=nextMile(n),pm=prevMile(n);
   const pct=Math.min(100,Math.round(((n-pm)/(nm-pm))*100));
   const left=nm-n;
   const total=h.per?(n*h.per):0;
   const taken=MILES.filter(m=>m<=n).length;
-  const btnText=h.type==='do'?'Сделал сегодня':'День прошёл чисто';
-  const btnDone=h.type==='do'?'Сегодня отмечено ✓':'День засчитан ✓';
-  const cells=[];
-  const show=Math.min(n,365);
-  for(let k=show-1;k>=0;k--){
-    const d=new Date();d.setDate(d.getDate()-k);
-    const key=iso(d);
-    cells.push('<i class="on'+(mk.has(key)?' mk':'')+(k===0?' today':'')+'"></i>');
+  let body='';
+  if(open){
+    const cells=[];
+    const show=Math.min(n,365);
+    for(let k=show-1;k>=0;k--){
+      const d=new Date(now());d.setDate(d.getDate()-k);
+      const key=iso(d);
+      cells.push('<i class="on'+(mk.has(key)?' mk':'')+(k===0?' today':'')+'"></i>');
+    }
+    const isConfirm=confirmIdx===i, isDate=dateIdx===i;
+    body=`<div class="cbody" style="display:block">
+      <div class="big">${n}<span class="unit">${plural(n,'день','дня','дней')}<br>подряд</span></div>
+      <div class="since">с ${parse(h.start).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</div>
+      <div class="stake">
+        <div class="st"><b>${humanSpan(n)}</b><span>${h.type==='do'?'ЖИЗНИ ВЛОЖЕНО':'ТЫ ДЕРЖИШЬСЯ'}</span></div>
+        ${total?`<div class="st"><b>${total.toLocaleString('ru-RU')}</b><span>${esc(h.unit).toUpperCase()} СДЕЛАНО</span></div>`:''}
+        ${taken?`<div class="st"><b>${taken}</b><span>${plural(taken,'ВЕХА ВЗЯТА','ВЕХИ ВЗЯТО','ВЕХ ВЗЯТО')}</span></div>`:''}
+        ${h.best>0?`<div class="st"><b>${h.best}</b><span>ПРОШЛЫЙ РЕКОРД</span></div>`:''}
+      </div>
+      <div class="goal">
+        <div class="row"><span>до <b>${nm}</b></span><span>осталось <b>${left}</b> ${plural(left,'день','дня','дней')}</span></div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+      </div>
+      <div class="grid">${cells.join('')}</div>
+      <div class="gridnote">${show<n?'последние 365 дней · ':''}яркие — отмеченные галочкой</div>
+      <div class="menu">
+        <p>Счётчик падает только здесь. Забыл галочку — ничего трогать не надо.</p>
+        <div class="row">
+          ${h.type==='do'
+            ?`<button class="mini danger" onclick="askBreak(${i})">Пропустил день</button>`
+            :`<button class="mini danger" onclick="askBreak(${i})">Сорвался</button>`}
+          <button class="mini" onclick="askDate(${i})">Дата старта</button>
+          <button class="mini" onclick="removeHabit(${i})">Удалить</button>
+        </div>
+        ${isConfirm?confirmBox(h,i,n):''}
+        ${isDate?`<div class="dateedit"><input type="date" id="de${i}" value="${h.start}"><button class="mini gold" onclick="saveDate(${i})">Сохранить</button></div>`:''}
+        ${h.debt?`<p style="margin-top:10px">Долг: ${h.debt} ${esc(h.unit)}. <button class="mini gold" onclick="clearDebt(${i})">Долг отдан</button></p>`:''}
+      </div>
+    </div>`;
   }
   return `
-  <div class="card ${h.color}">
-    <div class="name"><span>${esc(h.name)}</span>
-      <button class="kebab" onclick="toggleMenu(${i})" aria-label="Настройки">⋯</button></div>
-    <div class="big" id="big${i}">${n}<span class="unit">${plural(n,'день','дня','дней')}<br>подряд</span></div>
-    <div class="since">с ${parse(h.start).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</div>
-    <div class="stake">
-      <div class="st"><b>${humanSpan(n)}</b><span>${h.type==='do'?'ЖИЗНИ ВЛОЖЕНО':'ТЫ ДЕРЖИШЬСЯ'}</span></div>
-      ${total?`<div class="st"><b>${total.toLocaleString('ru-RU')}</b><span>${esc(h.unit).toUpperCase()} СДЕЛАНО</span></div>`:''}
-      ${taken?`<div class="st"><b>${taken}</b><span>${plural(taken,'ВЕХА ВЗЯТА','ВЕХИ ВЗЯТО','ВЕХ ВЗЯТО')}</span></div>`:''}
-      ${h.best>0?`<div class="st"><b>${h.best}</b><span>ПРОШЛЫЙ РЕКОРД</span></div>`:''}
-    </div>
-    <div class="goal">
-      <div class="row"><span>до <b>${nm}</b></span><span>осталось <b>${left}</b> ${plural(left,'день','дня','дней')}</span></div>
-      <div class="bar"><i style="width:${pct}%"></i></div>
-    </div>
-    <div class="grid">${cells.join('')}</div>
-    <div class="gridnote">${show<n?'последние 365 дней · ':''}яркие — те, что отмечены кнопкой</div>
-    <button class="done ${doneToday?'ok':''}" onclick="${doneToday?'':`mark(${i})`}">${doneToday?btnDone:btnText}</button>
-    <div class="menu" id="menu${i}">
-      <p>Счётчик падает только здесь. Забыл нажать кнопку — ничего трогать не надо.</p>
-      <div class="row">
-        ${h.type==='do'
-          ?`<button class="mini danger" onclick="breakStreak(${i})">Пропустил день</button>`
-          :`<button class="mini danger" onclick="breakStreak(${i})">Сорвался</button>`}
-        <button class="mini" onclick="editStart(${i})">Дата старта</button>
-        <button class="mini" onclick="removeHabit(${i})">Удалить</button>
-      </div>
-      ${h.debt?`<p style="margin-top:10px">Долг: ${h.debt} ${esc(h.unit)}. Отдал — скажи, обнулим.</p>`:''}
-    </div>
+  <div class="card ${h.color} ${open?'open':''}">
+    <button class="chead" onclick="toggleCard('${h.id}')">
+      <span class="arr">▶</span>
+      <span class="nm">${esc(h.name)}</span>
+      <span class="n2">${n} <small>${plural(n,'день','дня','дней')}</small></span>
+    </button>
+    ${body}
   </div>`;
 }
-function mark(i){
-  const h=S.habits[i],t=today();
-  h.marks=h.marks||[];
-  if(!h.marks.includes(t))h.marks.push(t);
-  save();render();
-  const el=document.getElementById('big'+i);
-  if(el){el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),460);}
-  const n=streak(h),nm=nextMile(n);
-  toast(MILES.includes(n)?`${n} ${plural(n,'день','дня','дней')}. Веха взята.`:`Отмечено. До ${nm} осталось ${nm-n}.`);
-}
-function toggleMenu(i){document.getElementById('menu'+i).classList.toggle('open');}
-function breakStreak(i){
-  const h=S.habits[i],n=streak(h);
+function confirmBox(h,i,n){
   const isDo=h.type==='do';
-  const msg=isDo
-    ?`Пропустил день?\n\nСчётчик (${n}) останется — пропуск закрывается долгом: +${h.per||100} ${h.unit||'повторений'}.`
-    :`Сорвался?\n\nСчёт пойдёт с нуля. Рекорд ${n} ${plural(n,'день','дня','дней')} сохранится навсегда.`;
-  if(!confirm(msg))return;
-  if(isDo){h.debt=(h.debt||0)+(h.per||100);save();render();toast(`Долг ${h.debt} ${h.unit}. Счётчик живой.`);}
-  else{h.best=Math.max(h.best||0,n);(h.resets=h.resets||[]).push(today());h.start=today();save();render();toast(`С нуля. Рекорд ${h.best} остался твоим.`);}
+  const txt=isDo
+    ?(h.per?`Пропуск закрывается долгом +${h.per} ${esc(h.unit)}. Счётчик (${n}) живёт.`:`Пропуск просто отмечается — счётчик (${n}) живёт.`)
+    :`Точно? Счёт с нуля. Рекорд ${n} ${plural(n,'день','дня','дней')} останется навсегда.`;
+  return `<div class="confirmbox"><p>${txt}</p><div class="row">
+    <button class="mini danger" onclick="doBreak(${i})">${isDo?'Да, пропустил':'Да, с нуля'}</button>
+    <button class="mini" onclick="confirmIdx=null;render()">Отмена</button></div></div>`;
 }
-function editStart(i){
-  const h=S.habits[i];
-  const v=prompt('Дата начала (ГГГГ-ММ-ДД):',h.start);
-  if(!v||!/^\d{4}-\d{2}-\d{2}$/.test(v))return;
-  if(daysBetween(v,today())<0){alert('Дата в будущем.');return;}
-  h.start=v;save();render();
+function toggleCard(id){
+  if(openCards.has(id))openCards.delete(id);else openCards.add(id);
+  confirmIdx=null;dateIdx=null;renderList();
 }
+function askBreak(i){confirmIdx=i;dateIdx=null;renderList();}
+function askDate(i){dateIdx=i;confirmIdx=null;renderList();}
+function saveDate(i){
+  const v=document.getElementById('de'+i).value;
+  if(!v)return;
+  if(daysBetween(v,today())<0){toast('Дата в будущем.');return;}
+  S.habits[i].start=v;dateIdx=null;save();render();
+}
+function doBreak(i){
+  const h=S.habits[i],n=streak(h);
+  if(h.type==='do'){
+    if(h.per){h.debt=(h.debt||0)+h.per;toast(`Долг ${h.debt} ${h.unit}. Счётчик живой.`);}
+    else toast('Пропуск отмечен. Счётчик живой.');
+  }else{
+    h.best=Math.max(h.best||0,n);(h.resets=h.resets||[]).push(today());h.start=today();
+    toast(`С нуля. Рекорд ${h.best} остался твоим.`);
+  }
+  confirmIdx=null;save();render();
+}
+function clearDebt(i){S.habits[i].debt=0;save();render();toast('Чисто. Долгов нет.');}
 function removeHabit(i){
   if(!confirm(`Удалить «${S.habits[i].name}» вместе с историей?`))return;
   S.habits.splice(i,1);save();render();
@@ -357,37 +482,43 @@ function closeForm(){
   document.getElementById('form').classList.remove('open');
   document.getElementById('addbtn').style.display='';
   document.getElementById('f_name').value='';
+  document.getElementById('f_per').value='';
+  document.getElementById('f_name').classList.remove('err');
 }
 function addHabit(){
-  const name=document.getElementById('f_name').value.trim();
+  const nameEl=document.getElementById('f_name');
+  const name=nameEl.value.trim();
   const type=document.getElementById('f_type').value;
   const start=document.getElementById('f_start').value||today();
-  if(!name){alert('Напиши название.');return;}
-  if(daysBetween(start,today())<0){alert('Дата в будущем.');return;}
+  if(!name){nameEl.classList.add('err');toast('Напиши название.');return;}
+  if(daysBetween(start,today())<0){toast('Дата старта в будущем.');return;}
+  let per=0,unit='';
+  const perRaw=document.getElementById('f_per').value.trim();
+  const m=perRaw.match(/^(\d+)\s*(.*)$/);
+  if(m){per=+m[1];unit=m[2]||'повторений';}
   const used=S.habits.map(h=>h.color);
   const color=used.filter(c=>c==='fire').length<=used.filter(c=>c==='ice').length?'fire':'ice';
-  S.habits.push({id:'h'+Date.now(),name,type,start,per:0,unit:'',color,marks:[],resets:[],best:0,debt:0});
+  S.habits.push({id:'h'+Date.now(),name,type,start,per,unit,color,marks:[],resets:[],best:0,debt:0});
   save();closeForm();render();toast('Пошёл счёт.');
 }
 
-/* запись дня */
+/* ── запись дня ── */
 function renderNotes(){
   const t=today();
   const cur=S.notes.find(n=>n.d===t);
-  const sunday=new Date().getDay()===0;
+  const sunday=now().getDay()===0;
   document.getElementById('noteText').value=cur?cur.t:'';
-  const ta=document.getElementById('noteText');
-  if(sunday){
-    document.getElementById('noteLbl').textContent='Воскресная ревизия недели';
-    ta.placeholder='1. Проявлялся ли я на этой неделе?\n2. Отдыхал ли телом — настоящим отдыхом, не псевдо?\n3. Тянуло ли в избегание (игры, рилсы, сладкое)? Поймал где?\n4. Что с деньгами: пришло / ушло / что висит?\n5. Планка: держу, повышаю или неделя удержания?';
-    ta.style.minHeight='140px';
-  }else{
-    document.getElementById('noteLbl').textContent=cur?'Запись за сегодня (можно дописать)':'Пара строк о сегодня';
-  }
-  const last=S.notes.filter(n=>n.d!==t).slice(-14).reverse();
-  document.getElementById('noteHist').innerHTML=last.map(n=>
+  document.getElementById('sundayQs').classList.toggle('show',sunday);
+  document.getElementById('noteLbl').textContent=sunday?'Воскресная ревизия недели':(cur?'Запись за сегодня (можно дописать)':'Пара строк о сегодня');
+  const past=S.notes.filter(n=>n.d!==t).reverse();
+  const shown=histAll?past:past.slice(0,3);
+  document.getElementById('noteHist').innerHTML=shown.map(n=>
     `<div class="h1n"><div class="d">${parse(n.d).toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}</div><div class="t">${esc(n.t)}</div></div>`).join('');
+  const more=document.getElementById('moreBtn');
+  if(past.length>3){more.style.display='';more.textContent=histAll?'Свернуть':`Показать ещё ${past.length-3}`;}
+  else more.style.display='none';
 }
+function toggleHist(){histAll=!histAll;renderNotes();}
 function saveNote(){
   const v=document.getElementById('noteText').value.trim();
   const t=today();
@@ -396,7 +527,7 @@ function saveNote(){
   save();renderNotes();toast(v?'Записано.':'Запись очищена.');
 }
 
-/* бэкап */
+/* ── бэкап ── */
 function exportData(){
   try{
     const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
@@ -404,6 +535,7 @@ function exportData(){
     a.href=URL.createObjectURL(blob);
     a.download='счётчик-дней-'+today()+'.json';
     document.body.appendChild(a);a.click();a.remove();
+    S.lastExport=today();save();renderToday();
     toast('Копия в загрузках.');
   }catch(e){toast('Не вышло — попробуй с компа.');}
 }
