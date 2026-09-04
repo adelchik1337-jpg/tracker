@@ -141,6 +141,23 @@
   .h1n .t{font-size:14.5px;white-space:pre-wrap}
   .morebtn{width:100%;background:none;border:1px solid var(--line);color:var(--mute);border-radius:10px;padding:10px;font-size:13px;font-weight:600;margin-top:10px;min-height:44px}
 
+  /* банк идей */
+  .ideas{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+  .ideas .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--mute);margin-bottom:10px}
+  .microw{display:flex;gap:8px}
+  .micbtn{flex:0 0 58px;height:58px;border-radius:50%;border:none;background:var(--fire);color:#fff;font-size:24px;transition:transform .1s}
+  .micbtn.rec{background:#C62828;animation:pulse 1.2s infinite}
+  .micbtn:disabled{background:var(--line);color:var(--faint)}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(198,40,40,.5)}70%{box-shadow:0 0 0 14px rgba(198,40,40,0)}100%{box-shadow:0 0 0 0 rgba(198,40,40,0)}}
+  .ideas textarea{flex:1;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px;font-size:15.5px;line-height:1.5;min-height:58px;resize:vertical}
+  .ideas .savebtn{width:100%;border:1px solid var(--line);background:none;color:var(--text);border-radius:10px;padding:12px;font-size:14px;font-weight:600;margin-top:10px;min-height:44px}
+  .ideas .micnote{font-size:12px;color:var(--faint);margin-top:8px}
+  .ilist{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .i1{background:var(--surface2);border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start}
+  .i1 .body{flex:1}
+  .i1 .d{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;margin-bottom:3px}
+  .i1 .t{font-size:14.5px;white-space:pre-wrap}
+  .i1 .del{background:none;border:none;color:var(--faint);font-size:16px;padding:4px 8px;min-height:36px}
   .backup{display:flex;gap:8px;margin:4px 0 26px}
   .backup button,.backup label.up{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--mute);border-radius:10px;padding:12px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;min-height:44px}
   .backup input{display:none}
@@ -215,6 +232,19 @@
     <button class="morebtn" id="moreBtn" onclick="toggleHist()" style="display:none"></button>
   </div>
 
+  <h2 class="sec">Банк идей</h2>
+  <div class="ideas">
+    <div class="lbl" id="ideaLbl">Надиктуй или напиши — разберём на воскресной ревизии</div>
+    <div class="microw">
+      <button class="micbtn" id="micBtn" onclick="toggleMic()" aria-label="Диктовать">🎤</button>
+      <textarea id="ideaText" placeholder="Идея, мысль, наблюдение…"></textarea>
+    </div>
+    <button class="savebtn" onclick="saveIdea()">Сохранить идею</button>
+    <div class="micnote" id="micNote"></div>
+    <div class="ilist" id="ideaList"></div>
+    <button class="morebtn" id="ideaMore" onclick="toggleIdeas()" style="display:none"></button>
+  </div>
+
   <h2 class="sec">Данные</h2>
   <div class="backup">
     <button onclick="exportData()">Скачать копию</button>
@@ -265,12 +295,12 @@ function fresh(){
     {id:'push',name:'Отжимания',type:'do',start:'2026-02-12',per:100,unit:'отжиманий',color:'fire',marks:[],resets:[],best:0,debt:0},
     {id:'sober',name:'Без алкоголя и никотина',type:'avoid',start:'2026-08-05',per:0,unit:'',color:'ice',marks:[],resets:[],best:0,debt:0},
     {id:'games',name:'Без видеоигр',type:'avoid',start:'2026-09-04',per:0,unit:'',color:'fire',marks:[],resets:[],best:0,debt:0}
-  ],aff:{text:'',log:[]},notes:[],lastExport:null};
+  ],aff:{text:'',log:[]},notes:[],ideas:[],lastExport:null};
 }
 let S=null;
 try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):fresh();}catch(e){S=fresh();}
 if(!S||!Array.isArray(S.habits))S=fresh();
-S.aff=S.aff||{text:'',log:[]}; S.notes=S.notes||[];
+S.aff=S.aff||{text:'',log:[]}; S.notes=S.notes||[]; S.ideas=S.ideas||[];
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast('Не сохранилось — памяти нет');}}
 
 /* состояние сессии (не хранится) */
@@ -279,7 +309,7 @@ let confirmIdx=null, dateIdx=null, histAll=false;
 
 function render(){
   document.getElementById('today').textContent=now().toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
-  renderToday(); renderAff(); renderList(); renderNotes();
+  renderToday(); renderAff(); renderList(); renderNotes(); renderIdeas();
   document.getElementById('addbtn').style.display=S.habits.length>=8?'none':'';
 }
 
@@ -527,6 +557,71 @@ function saveNote(){
   save();renderNotes();toast(v?'Записано.':'Запись очищена.');
 }
 
+/* ── банк идей ── */
+let ideasAll=false, rec=null, recOn=false, baseText='';
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function micInit(){
+  const btn=document.getElementById('micBtn'), note=document.getElementById('micNote');
+  if(!SR){btn.disabled=true;note.textContent='Диктовка в этом браузере недоступна — пиши текстом. На iPhone открой в Safari.';return;}
+  note.textContent='';
+}
+function toggleMic(){
+  if(!SR)return;
+  if(recOn){stopMic();return;}
+  const ta=document.getElementById('ideaText');
+  baseText=ta.value?ta.value.replace(/\s+$/,'')+' ':'';
+  rec=new SR();
+  rec.lang='ru-RU'; rec.continuous=true; rec.interimResults=true;
+  rec.onresult=e=>{
+    let fin='',inter='';
+    for(let i=0;i<e.results.length;i++){
+      if(e.results[i].isFinal)fin+=e.results[i][0].transcript+' ';
+      else inter+=e.results[i][0].transcript;
+    }
+    ta.value=(baseText+fin+inter).replace(/\s+/g,' ');
+  };
+  rec.onend=()=>{if(recOn){try{rec.start();}catch(e){stopMic();}}};
+  rec.onerror=ev=>{
+    if(ev.error==='not-allowed'){toast('Разреши доступ к микрофону в настройках браузера.');stopMic();}
+    else if(ev.error==='no-speech'){/* тишина — цикл перезапустит */}
+    else{stopMic();}
+  };
+  try{rec.start();recOn=true;document.getElementById('micBtn').classList.add('rec');
+    document.getElementById('ideaLbl').textContent='Слушаю… говори. Тапни микрофон ещё раз — стоп.';}
+  catch(e){toast('Микрофон не запустился.');}
+}
+function stopMic(){
+  recOn=false;
+  if(rec){try{rec.onend=null;rec.stop();}catch(e){}}
+  document.getElementById('micBtn').classList.remove('rec');
+  document.getElementById('ideaLbl').textContent='Надиктуй или напиши — разберём на воскресной ревизии';
+}
+function saveIdea(){
+  stopMic();
+  const ta=document.getElementById('ideaText');
+  const v=ta.value.trim();
+  if(!v){toast('Пусто.');return;}
+  S.ideas.push({d:today(),t:v,ts:Date.now()});
+  ta.value='';save();renderIdeas();toast('Идея в банке.');
+}
+function delIdea(ts){
+  const i=S.ideas.findIndex(x=>x.ts===ts);
+  if(i<0)return;
+  if(!confirm('Удалить идею?'))return;
+  S.ideas.splice(i,1);save();renderIdeas();
+}
+function renderIdeas(){
+  micInit();
+  const all=[...S.ideas].reverse();
+  const shown=ideasAll?all:all.slice(0,5);
+  document.getElementById('ideaList').innerHTML=shown.map(x=>
+    `<div class="i1"><div class="body"><div class="d">${parse(x.d).toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}</div><div class="t">${esc(x.t)}</div></div><button class="del" onclick="delIdea(${x.ts})">×</button></div>`).join('');
+  const more=document.getElementById('ideaMore');
+  if(all.length>5){more.style.display='';more.textContent=ideasAll?'Свернуть':`Показать ещё ${all.length-5}`;}
+  else more.style.display='none';
+}
+function toggleIdeas(){ideasAll=!ideasAll;renderIdeas();}
+
 /* ── бэкап ── */
 function exportData(){
   try{
@@ -547,7 +642,7 @@ function importData(ev){
       const d=JSON.parse(r.result);
       if(!d||!Array.isArray(d.habits))throw 0;
       if(!confirm('Заменить текущие данные данными из файла?'))return;
-      S=d;S.aff=S.aff||{text:'',log:[]};S.notes=S.notes||[];
+      S=d;S.aff=S.aff||{text:'',log:[]};S.notes=S.notes||[];S.ideas=S.ideas||[];
       save();render();toast('Восстановлено.');
     }catch(e){toast('Файл не подошёл.');}
   };
