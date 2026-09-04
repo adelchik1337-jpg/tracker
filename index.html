@@ -14,6 +14,7 @@
     --fire:#FF7043; --fire-bg:#25150F; --fire-dim:#4A2818;
     --ice:#3FC9AE; --ice-bg:#0E211E; --ice-dim:#1C4038;
     --gold:#D9B26A; --gold-bg:#221B0F;
+    --vio:#A78BFA; --vio-bg:#1B1526; --vio-dim:#3B2E5C;
     --disp:'Oswald',Impact,sans-serif;
     --body:'Golos Text',system-ui,-apple-system,sans-serif;
   }
@@ -141,6 +142,21 @@
   .h1n .t{font-size:14.5px;white-space:pre-wrap}
   .morebtn{width:100%;background:none;border:1px solid var(--line);color:var(--mute);border-radius:10px;padding:10px;font-size:13px;font-weight:600;margin-top:10px;min-height:44px}
 
+  /* челленджи */
+  .trow.vio .num{color:var(--vio)}
+  .trow.vio.on .ck{background:var(--vio)}
+  .card.vio{border-color:var(--vio-dim)}
+  .card.vio .chead .nm{color:var(--vio)}
+  .card.vio .bar i{background:var(--vio)}
+  .card.vio .grid i.on{background:var(--vio);opacity:.4}
+  .card.vio .grid i.mk{opacity:1}
+  .card.vio .grid i.today{color:var(--vio)}
+  .chrule{background:var(--vio-bg);border:1px solid var(--vio-dim);border-radius:10px;padding:11px 14px;font-size:14px;line-height:1.5;margin-top:10px}
+  .chrule .tag2{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--vio);display:block;margin-bottom:4px}
+  .chdone{background:var(--vio-bg);border:1px solid var(--vio);border-radius:12px;padding:14px;margin-top:12px;text-align:center}
+  .chdone b{display:block;font-family:var(--disp);font-size:20px;color:var(--vio);margin-bottom:8px}
+  .chdone .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .form textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:11px 12px;font-size:15px;min-height:64px;resize:vertical}
   /* банк идей */
   .ideas{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:12px}
   .ideas .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--mute);margin-bottom:10px}
@@ -222,6 +238,22 @@
   </div>
   <button class="add" id="addbtn" onclick="openForm()">+ Добавить привычку</button>
 
+  <div class="form" id="chform">
+    <label>Название челленджа</label>
+    <input id="c_name" placeholder="например: Режиссёр" maxlength="42">
+    <label>Правило дня (что считается «сделано»)</label>
+    <textarea id="c_rule" placeholder="Одно конкретное действие в день. Чем проще проверить — тем дольше проживёт."></textarea>
+    <label>Срок, дней</label>
+    <input id="c_days" type="number" value="30" min="7" max="120">
+    <label>Старт</label>
+    <input id="c_start" type="date">
+    <div class="btns">
+      <button onclick="closeChForm()">Отмена</button>
+      <button class="go" onclick="addChallenge()">Взять челлендж</button>
+    </div>
+  </div>
+  <button class="add" id="chaddbtn" onclick="openChForm()" style="margin-top:8px">🎬 Взять челлендж на срок</button>
+
   <h2 class="sec">Запись дня</h2>
   <div class="note">
     <div class="lbl" id="noteLbl">Пара строк о сегодня</div>
@@ -295,12 +327,20 @@ function fresh(){
     {id:'push',name:'Отжимания',type:'do',start:'2026-02-12',per:100,unit:'отжиманий',color:'fire',marks:[],resets:[],best:0,debt:0},
     {id:'sober',name:'Без алкоголя и никотина',type:'avoid',start:'2026-08-05',per:0,unit:'',color:'ice',marks:[],resets:[],best:0,debt:0},
     {id:'games',name:'Без видеоигр',type:'avoid',start:'2026-09-04',per:0,unit:'',color:'fire',marks:[],resets:[],best:0,debt:0}
+  ],challenges:[
+    {id:'c1',name:'Режиссёр',rule:'Каждый день — одна сцена: одно действие, которого боится эго. Вечером — строка в «Запись дня»: что снял.',days:30,start:'2026-09-05',marks:[],closed:false}
   ],aff:{text:'',log:[]},notes:[],ideas:[],lastExport:null};
 }
 let S=null;
 try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):fresh();}catch(e){S=fresh();}
 if(!S||!Array.isArray(S.habits))S=fresh();
-S.aff=S.aff||{text:'',log:[]}; S.notes=S.notes||[]; S.ideas=S.ideas||[];
+S.aff=S.aff||{text:'',log:[]}; S.notes=S.notes||[]; S.ideas=S.ideas||[]; S.challenges=S.challenges||[];
+/* разовая миграция: заготовка первого челленджа для уже существующих данных */
+if(!S.chSeed1){S.chSeed1=true;
+  if(!S.challenges.some(c=>c.name==='Режиссёр'))
+    S.challenges.push({id:'c1',name:'Режиссёр',rule:'Каждый день — одна сцена: одно действие, которого боится эго. Вечером — строка в «Запись дня»: что снял.',days:30,start:'2026-09-05',marks:[],closed:false});
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast('Не сохранилось — памяти нет');}}
 
 /* состояние сессии (не хранится) */
@@ -324,6 +364,16 @@ function renderToday(){
       <span class="num" id="qn${i}">${streak(h)}</span>
       <span class="ck"></span></button>`;
   });
+  S.challenges.forEach((c,ci)=>{
+    if(c.closed)return;
+    const day=daysBetween(c.start,t)+1;
+    if(day<1||day>c.days)return;
+    const on=(c.marks||[]).includes(t);
+    rows.push(`<button class="trow vio ${on?'on':''}" onclick="quickCh(${ci})">
+      <span class="nm">🎬 ${esc(c.name)}<small>${on?'✓ сцена снята':'день '+day+' из '+c.days+' — снять сцену'}</small></span>
+      <span class="num">${(c.marks||[]).length}</span>
+      <span class="ck"></span></button>`);
+  });
   if(S.aff.text&&S.aff.text.trim()){
     const on=S.aff.log.includes(t);
     rows.push(`<button class="trow gold ${on?'on':''}" onclick="quickAff()">
@@ -332,8 +382,9 @@ function renderToday(){
       <span class="ck"></span></button>`);
   }
   document.getElementById('todayRows').innerHTML=rows.join('');
-  const total=S.habits.length+((S.aff.text&&S.aff.text.trim())?1:0);
-  const done=S.habits.filter(h=>(h.marks||[]).includes(t)).length+((S.aff.text&&S.aff.log.includes(t))?1:0);
+  const activeCh=S.challenges.filter(c=>{if(c.closed)return false;const d=daysBetween(c.start,t)+1;return d>=1&&d<=c.days;});
+  const total=S.habits.length+activeCh.length+((S.aff.text&&S.aff.text.trim())?1:0);
+  const done=S.habits.filter(h=>(h.marks||[]).includes(t)).length+activeCh.filter(c=>(c.marks||[]).includes(t)).length+((S.aff.text&&S.aff.log.includes(t))?1:0);
   const cnt=document.getElementById('todayCnt');
   cnt.textContent=done+'/'+total+(done===total&&total>0?' ✓':'');
   cnt.classList.toggle('full',done===total&&total>0);
@@ -403,7 +454,8 @@ function editAff(){
 
 /* ── карточки прогресса ── */
 function renderList(){
-  document.getElementById('list').innerHTML=S.habits.map(card).join('');
+  const ch=S.challenges.map((c,i)=>c.closed?'':chCard(c,i)).join('');
+  document.getElementById('list').innerHTML=ch+S.habits.map(card).join('');
 }
 function card(h,i){
   const n=streak(h);
@@ -557,6 +609,93 @@ function saveNote(){
   save();renderNotes();toast(v?'Записано.':'Запись очищена.');
 }
 
+/* ── челленджи ── */
+function quickCh(ci){
+  const c=S.challenges[ci],t=today();
+  c.marks=c.marks||[];
+  const i=c.marks.indexOf(t);
+  if(i>=0){c.marks.splice(i,1);save();render();return;}
+  c.marks.push(t);save();render();
+  const left=c.days-c.marks.length;
+  toast(left>0?`Сцена снята. Осталось ${left} из ${c.days}.`:'Все сцены сняты. Финал!');
+}
+function chCard(c,ci){
+  const t=today();
+  const day=Math.max(1,daysBetween(c.start,t)+1);
+  const shot=(c.marks||[]).length;
+  const over=day>c.days;
+  const open=openCards.has(c.id);
+  const pct=Math.min(100,Math.round(100*shot/c.days));
+  let body='';
+  if(open){
+    const cells=[];
+    for(let k=0;k<c.days;k++){
+      const d=parse(c.start);d.setDate(d.getDate()+k);
+      const key=iso(d);
+      const past=key<=t;
+      cells.push('<i class="'+(past?'on':'')+((c.marks||[]).includes(key)?' mk':'')+(key===t?' today':'')+'"></i>');
+    }
+    body=`<div class="cbody" style="display:block">
+      <div class="chrule"><span class="tag2">Правило дня</span>${esc(c.rule||'')}</div>
+      <div class="goal" style="margin-top:14px">
+        <div class="row"><span>снято <b>${shot}</b> из ${c.days}</span><span>${over?'срок вышел':'день <b>'+Math.min(day,c.days)+'</b> из '+c.days}</span></div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+      </div>
+      <div class="grid">${cells.join('')}</div>
+      <div class="gridnote">клетки — все ${c.days} дней челленджа; яркие — снятые сцены</div>
+      ${over||shot>=c.days?`<div class="chdone"><b>${shot>=Math.round(c.days*0.8)?'Челлендж пройден: '+shot+' из '+c.days:'Финал: '+shot+' из '+c.days}</b>
+        <div class="row">
+          <button class="mini gold" onclick="chToHabit(${ci})">Сделать привычкой</button>
+          <button class="mini" onclick="chClose(${ci})">Закрыть</button>
+        </div></div>`
+      :`<div class="menu"><div class="row">
+          <button class="mini" onclick="chClose(${ci})">Сойти с челленджа</button>
+        </div></div>`}
+    </div>`;
+  }
+  return `
+  <div class="card vio ${open?'open':''}">
+    <button class="chead" onclick="toggleCard('${c.id}')">
+      <span class="arr">▶</span>
+      <span class="nm">🎬 ${esc(c.name)}</span>
+      <span class="n2">${shot}<small>/${c.days}</small></span>
+    </button>
+    ${body}
+  </div>`;
+}
+function chToHabit(ci){
+  const c=S.challenges[ci];
+  S.habits.push({id:'h'+Date.now(),name:c.name,type:'do',start:today(),per:0,unit:'',color:'fire',marks:[],resets:[],best:0,debt:0});
+  c.closed=true;save();render();
+  toast('Теперь это привычка. Счёт пошёл заново — уже навсегда.');
+}
+function chClose(ci){
+  const c=S.challenges[ci];
+  if(!confirm(`Закрыть челлендж «${c.name}»? Снятые сцены (${(c.marks||[]).length}) останутся в истории.`))return;
+  c.closed=true;save();render();
+}
+function openChForm(){
+  document.getElementById('c_start').value=today();
+  document.getElementById('chform').classList.add('open');
+  document.getElementById('chaddbtn').style.display='none';
+  document.getElementById('c_name').focus();
+}
+function closeChForm(){
+  document.getElementById('chform').classList.remove('open');
+  document.getElementById('chaddbtn').style.display='';
+}
+function addChallenge(){
+  const name=document.getElementById('c_name').value.trim();
+  const rule=document.getElementById('c_rule').value.trim();
+  const days=Math.max(7,Math.min(120,+document.getElementById('c_days').value||30));
+  const start=document.getElementById('c_start').value||today();
+  if(!name){toast('Назови челлендж.');return;}
+  if(!rule){toast('Без правила дня челлендж умрёт — напиши, что считается «сделано».');return;}
+  S.challenges.push({id:'c'+Date.now(),name,rule,days,start,marks:[],closed:false});
+  document.getElementById('c_name').value='';document.getElementById('c_rule').value='';
+  closeChForm();save();render();toast('Взят. День 1 — завтра не считается.');
+}
+
 /* ── банк идей ── */
 let ideasAll=false, rec=null, recOn=false, baseText='';
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -642,7 +781,7 @@ function importData(ev){
       const d=JSON.parse(r.result);
       if(!d||!Array.isArray(d.habits))throw 0;
       if(!confirm('Заменить текущие данные данными из файла?'))return;
-      S=d;S.aff=S.aff||{text:'',log:[]};S.notes=S.notes||[];S.ideas=S.ideas||[];
+      S=d;S.aff=S.aff||{text:'',log:[]};S.notes=S.notes||[];S.ideas=S.ideas||[];S.challenges=S.challenges||[];
       save();render();toast('Восстановлено.');
     }catch(e){toast('Файл не подошёл.');}
   };
