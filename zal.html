@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0D0F12">
+<title>Зал</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0D0F12; --surface:#16191E; --surface2:#111418;
+    --line:#242A32; --line-soft:#1C2127;
+    --text:#E9ECF0; --mute:#878F9A; --faint:#5C646E;
+    --fire:#FF7043; --fire-bg:#25150F; --fire-dim:#4A2818;
+    --ice:#3FC9AE; --ice-bg:#0E211E; --ice-dim:#1C4038;
+    --gold:#D9B26A; --gold-bg:#221B0F;
+    --disp:'Oswald',Impact,sans-serif;
+    --body:'Golos Text',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:560px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 16px 90px}
+  a{color:var(--ice)}
+  .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .ttl{font-family:var(--disp);font-size:19px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+  .back{font-size:13px;color:var(--mute);text-decoration:none}
+  .dek{color:var(--mute);font-size:14px;margin:0 0 16px}
+
+  h2{font-family:var(--disp);font-size:15px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:26px 0 10px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px}
+  .card > :first-child{margin-top:0}.card > :last-child{margin-bottom:0}
+  .card p{margin:0 0 10px}
+  .card.a{border-color:var(--fire-dim)} .card.b{border-color:var(--ice-dim)}
+  .card h3{font-family:var(--disp);font-size:22px;font-weight:600;margin:0 0 4px;letter-spacing:.02em}
+  .card.a h3{color:var(--fire)} .card.b h3{color:var(--ice)}
+  .sub{font-size:12.5px;color:var(--mute);margin:0 0 12px}
+
+  .ex{display:grid;grid-template-columns:22px 1fr auto;gap:4px 10px;padding:11px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
+  .ex:last-of-type{border-bottom:none}
+  .ex .n{font-family:var(--disp);font-size:14px;color:var(--faint)}
+  .ex b{font-weight:600;font-size:15px}
+  .ex .find{grid-column:2;font-size:12.5px;color:var(--mute)}
+  .ex .sets{font-family:var(--disp);font-size:16px;font-weight:600;white-space:nowrap}
+  .card.a .sets{color:var(--fire)} .card.b .sets{color:var(--ice)}
+
+  .rule{background:var(--surface2);border-left:2px solid var(--gold);border-radius:0 9px 9px 0;padding:10px 14px;margin-top:10px;font-size:14px}
+  .rule b{color:var(--gold)}
+  .warn{background:var(--fire-bg);border:1px solid var(--fire-dim);border-radius:10px;padding:11px 14px;margin-top:10px;font-size:13.5px}
+  .warn b{color:var(--fire)}
+  .okbox{background:var(--ice-bg);border:1px solid var(--ice-dim);border-radius:10px;padding:11px 14px;margin-top:10px;font-size:13.5px}
+  .okbox b{color:var(--ice)}
+
+  ol.pl,ul.pl{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:8px}
+  li{line-height:1.5}
+  li b{font-weight:600}
+  .mark{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--faint)}
+
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  td.w{font-family:var(--disp);color:var(--gold);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="ttl">Зал · фулбади A/B</span><a class="back" href="./">← трекер</a></div>
+  <p class="dek">Через день, чередуя A и B. Пропустил день — просто идёшь на следующий, ничего не рушится. Цель — живот, поэтому внизу еда: кубики лепятся в зале, а проявляются едой.</p>
+
+  <div class="warn"><b>Старт — после выздоровления.</b> Можно начинать, когда: температура в норме 3 дня без таблеток · слабость и ломота прошли полностью · утренний пульс обычный. Сомневаешься — к врачу, это не медсовет. <b>Неделя 1 — вполсилы:</b> веса 50–60%, по 2 подхода, без бега, из зала выходишь свежим. Кто после болезни рвёт — болеет снова.</div>
+
+  <div class="card a">
+    <h3>Тренировка A</h3>
+    <p class="sub">~50–60 минут · отдых: база 2–3 мин, остальное 1.5–2</p>
+    <div class="ex"><span class="n">1</span><b>Приседания со штангой</b><span class="sets">3×6–10</span><span class="find">силовая рама; первые 2–3 недели можно в Смите</span></div>
+    <div class="ex"><span class="n">2</span><b>Тяга верхнего блока к груди</b><span class="sets">3×8–12</span><span class="find">Lat Pulldown</span></div>
+    <div class="ex"><span class="n">3</span><b>Жим гантелей сидя над головой</b><span class="sets">3×8–12</span><span class="find">скамья со спинкой 90°</span></div>
+    <div class="ex"><span class="n">4</span><b>Сгибания ног лёжа</b><span class="sets">3×10–15</span><span class="find">Leg Curl</span></div>
+    <div class="ex"><span class="n">5</span><b>Скручивания на блоке «молитва»</b><span class="sets">3×10–15</span><span class="find">верхний блок + канат, на коленях</span></div>
+    <div class="ex"><span class="n">6</span><b>Планка</b><span class="sets">3×40–60 сек</span><span class="find">когда 60 сек легко — рюкзак с блином на спину</span></div>
+  </div>
+
+  <div class="card b">
+    <h3>Тренировка B</h3>
+    <p class="sub">~50–60 минут</p>
+    <div class="ex"><span class="n">1</span><b>Румынская тяга со штангой</b><span class="sets">3×8–12</span><span class="find">спина прямая, штанга вдоль ног; вес не гнать — техника прежде всего</span></div>
+    <div class="ex"><span class="n">2</span><b>Жим ногами</b><span class="sets">3×10–15</span><span class="find">платформа 45°</span></div>
+    <div class="ex"><span class="n">3</span><b>Тяга горизонтального блока</b><span class="sets">3×8–12</span><span class="find">Seated Row</span></div>
+    <div class="ex"><span class="n">4</span><b>Жим гантелей на наклонной ~30°</b><span class="sets">2×8–12</span><span class="find">всего 2 подхода — грудь и так пашет каждый день</span></div>
+    <div class="ex"><span class="n">5</span><b>Подъёмы ног в упоре</b><span class="sets">3×10–15</span><span class="find">«капитанское кресло» или вис на турнике</span></div>
+    <div class="ex"><span class="n">6</span><b>Фермерская прогулка</b><span class="sets">3×30–40 м</span><span class="find">две тяжёлые гантели, идёшь ровно</span></div>
+  </div>
+
+  <div class="rule"><b>Первый вес:</b> такой, что делаешь верх диапазона и в запасе остаётся 2–3 повтора. Осталось 5+ — мал, впритык — велик. <b>Прогрессия:</b> сделал все подходы по верхней границе — следующий раз +2.5 кг (гантели/блоки) или +5 кг (ноги). Не сделал — тот же вес, добивай. Это единственное, от чего мышцы растут.</div>
+
+  <div class="rule"><b>Твои 100 отжиманий учтены:</b> жим на грудь в программе один и лёгкий, тяг больше жимов — выравниваем 205 дней перекоса. В день тренировки B отжимания делай после зала или разбей утро/вечер.</div>
+
+  <h2>Кардио и шаги</h2>
+  <div class="card">
+    <ul class="pl">
+      <li><b>Бег 2–3 раза в неделю, 25–40 мин, лёгкий темп</b> — в дни без зала. Тест: можешь говорить предложениями — темп верный.</li>
+      <li><b>Шаги 8–10 тысяч в день</b> — самый большой незаметный расход за неделю, больше самих тренировок. Готовая накопительная цифра.</li>
+      <li><b>Первые 8 недель без интервалов и спринтов</b> — сон рваный, восстановление и так слабое место.</li>
+    </ul>
+  </div>
+
+  <h2>Честно про пресс</h2>
+  <div class="card">
+    <p>Пресс качается в A и B (скручивания, подъёмы ног, планка, фермер) — он станет сильнее и толще. Но <b>локального жиросжигания не существует</b>: видимым пресс делает только дефицит калорий. Живот у мужчин уходит последним — это генетика, а не твоя лень. Разумная скорость — 0.5–0.75 кг в неделю.</p>
+  </div>
+
+  <h2>Еда: 7 железных правил (вместо подсчёта)</h2>
+  <div class="card">
+    <ol class="pl">
+      <li><b>Каждый приём — ладонь белка</b> (мясо, рыба, яйца, творог). Белок насыщает сильнее всего и держит мышцы на дефиците.</li>
+      <li><b>Полтарелки — овощи</b> в обед и ужин.</li>
+      <li><b>Пить только воду, чай, кофе без сахара.</b> Компот и кола — невидимый жир на животе: жидкие калории не насыщают.</li>
+      <li><b>Гарнир ИЛИ хлеб — не оба.</b></li>
+      <li><b>Сладкое — только после еды с белком, максимум раз в день.</b> Никогда — в одиночку у ноутбука.</li>
+      <li><b>Не доедать через силу.</b> Встал слегка сытым — день зачтён.</li>
+      <li><b>После 22:00 — только творог или кефир.</b></li>
+    </ol>
+    <div class="okbox"><b>Счёт как ты любишь:</b> считаем не калории, а дни, когда все 7 правил соблюдены. Проверка — 10 секунд перед сном. Можно завести привычкой «День по правилам еды» в трекере.</div>
+  </div>
+
+  <h2>Столовая: что брать</h2>
+  <div class="card">
+    <p><b>Брать:</b> мясо/курицу/рыбу не в кляре · один гарнир (гречка, рис, картошка варёная) · свежий салат · суп · хлеба максимум кусок.<br>
+    <b>Не брать:</b> компот и соки · выпечку у кассы · салаты с майонезом · соусы сверху · панировку · второй гарнир.</p>
+    <table>
+      <tr><th>Сборка</th><th>Что на подносе</th></tr>
+      <tr><td class="w">Стандарт</td><td>суп + курица/мясо + свежий салат + 1 хлеб + чай без сахара</td></tr>
+      <tr><td class="w">После зала</td><td>гречка или рис + рыба/мясо + свежий салат</td></tr>
+      <tr><td class="w">Лёгкий вечер</td><td>двойной салат + двойной белок (мясо + яйцо), без гарнира и хлеба</td></tr>
+    </table>
+    <p style="margin-top:10px"><b>Белок без готовки</b> (магазин у дома): творог, варёные яйца, кефир без сахара, тунец/горбуша в собственном соку, курица-гриль, нарезка индейки. Ладонь белка трижды в день + пачка творога вечером = норма закрыта, ничего взвешивать не надо.</p>
+  </div>
+
+  <h2>Сон — часть программы</h2>
+  <div class="card">
+    <ul class="pl">
+      <li><b>7+ часов.</b> Недосып ломает гормоны голода — назавтра тянет на сладкое и жирное, и дефицит рушится не волей, а химией.</li>
+      <li><b>Кофеин до 15:00.</b> Полувыведение 5–6 часов, вечерний кофе ворует глубокий сон.</li>
+      <li><b>Перед ночной сессией — поесть белка заранее.</b> У ноутбука — только вода и чай.</li>
+    </ul>
+  </div>
+
+  <h2>Чего не делать</h2>
+  <div class="card">
+    <ul class="pl">
+      <li>Жиросжигатели и термогеники — не работают либо бьют по сердцу и сну.</li>
+      <li>«Сушки» с форумов и безуглеводки — при рваном сне и столовой гарантированно сорвут.</li>
+      <li>Жёсткие голодания — при ночных сессиях кончаются зажором.</li>
+      <li>Наказывать себя голодом за плохой день — следующий приём просто снова по правилам.</li>
+      <li>Тренироваться больным или «через не могу» — минус неделя, а не плюс день.</li>
+    </ul>
+  </div>
+
+  <h2>Что будет по неделям</h2>
+  <div class="card">
+    <table>
+      <tr><th>Срок</th><th>Что реально произойдёт</th></tr>
+      <tr><td class="w">Нед 1</td><td>Облегчённая. Задача одна: 3 тренировки состоялись. Это победа.</td></tr>
+      <tr><td class="w">Нед 2–4</td><td>Рабочие веса, техника. Прибавки почти каждую тренировку — нервы «вспоминают».</td></tr>
+      <tr><td class="w">Нед 8</td><td>Сила +10–20% на базе. Одежда сидит иначе; лицо и верх худеют первыми. При дефиците минус 3–5 кг.</td></tr>
+      <tr><td class="w">Нед 12</td><td>Минус 6–8 кг реально. Верхние кубики — если стартовый жир был умеренный. Полный рельеф при высоком старте — 4–6 месяцев, и это честно, а не сказка.</td></tr>
+    </table>
+  </div>
+
+  <div class="rule" style="margin-top:14px"><b>Твои плюсы уже в кассе:</b> 205 дней отжиманий — дисциплина есть. 31 день без алкоголя — дефициту уже помогает. Осталось направить это в зал, шаги и тарелку.</div>
+</div>
+</body>
+</html>
